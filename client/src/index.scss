@@ -143,6 +143,16 @@ h3 {
   gap: 1rem;
   margin-top: 1rem;
   flex-wrap: wrap;
+
+  input {
+    width: auto;
+  }
+
+  @media (max-width:768px) {
+    input {
+      width: 100%;
+    }
+  }
 }
 
 .cover {

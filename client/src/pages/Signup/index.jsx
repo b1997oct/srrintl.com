@@ -49,7 +49,7 @@ export default function Signup() {
         try {
         const { data: res } = await axios.post('/signup', data)
         Cookies.set('token', res.token)
-        navigate('/')
+        location.href ='/'
         } catch (err) {
             console.log('err: ', err);
             setError(err.response.data.message)

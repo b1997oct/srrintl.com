@@ -14,7 +14,7 @@ const PORT = 3001
 const app = express()
 
 app.use(cors())
-app.use(express.json({ limit: "5MB"}))
+app.use(express.json({ limit: "5MB" }))
 
 app.post('/signup', async (req, res) => {
     let { body } = req, { email, password } = body
@@ -58,8 +58,15 @@ app.post('/login', async (req, res) => {
 
 app.post('/books', async (req, res) => {
 
-    const { limit, skip } = req.body
+    const { limit, skip, ...others } = req.body
+
+    const match = {}
+    Object.keys(others).forEach(d => {
+        match[d] = new RegExp(others[d], 'i')
+    })
+
     const data = await Books.aggregate([
+        { $match: match },
         {
             $facet: {
                 metadata: [{ $count: "total" }],
@@ -88,8 +95,8 @@ app.post('/books', async (req, res) => {
 })
 
 
-app.post('/user/logout', (req, res)=>{
-   return res.status(200).json({ logout: true })
+app.post('/user/logout', (req, res) => {
+    return res.status(200).json({ logout: true })
 })
 
 app.post('/user/book', async (req, res) => {
@@ -117,11 +124,15 @@ app.post('/user/books', async (req, res) => {
     try {
         const token = req.headers.authorization
         const { user } = await verifyToken(token)
-        const { limit, skip } = req.body
+        const { limit, skip, ...others } = req.body
+
+        const match = { user: new mongoose.Types.ObjectId(user) }
+        Object.keys(others).forEach(d => {
+            match[d] = new RegExp(others[d], 'i')
+        })
 
         const data = await Books.aggregate([
-            { $match: { user: new mongoose.Types.ObjectId(user) } },
-
+            { $match: match },
             {
                 $facet: {
                     metadata: [{ $count: "total" }],

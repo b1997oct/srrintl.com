@@ -155,7 +155,7 @@ export default function Books() {
                     <div className='group'>
                         <div>Page No. {currentPage}/{totalPages}</div>
                         <button disabled={!prevPage}>Prev</button>
-                        <div>Records {total.current}</div>
+                        <div>Records {total}</div>
                         <button disabled={!nextPage}>Next</button>
                     </div>
                 </div>

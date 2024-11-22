@@ -27,18 +27,18 @@ const filters = [
     },
 ]
 export default function useFilters(initial) {
-    
+
     const [fils, setFils] = useState({
         limit: 24,
         skip: 0
     })
-    
+
     function onChange(e) {
         const { value, name } = e.target
         setFils({ ...fils, [name]: value })
     }
 
-     const filtersUi = (
+    const filtersUi = (
         <div className='filters'>
             {filters.map(d =>
                 <input name={d.name} onChange={onChange} value={fils[d.name] || ''} placeholder={d.label} />

@@ -42,7 +42,7 @@ export default function Login() {
         try {
         const { data: res } = await axios.post('/login', data)
         Cookies.set('token', res.token)
-        navigate('/')
+        location.href ='/'
         } catch (err) {
             setError(err.response.data.message)
         } finally {
