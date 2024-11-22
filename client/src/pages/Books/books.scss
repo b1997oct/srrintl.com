@@ -1,0 +1,47 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tbody {
+    min-height: 60vh;
+}
+
+
+th,
+td {
+    border: 1px solid #e4dede;
+    padding: 1rem;
+}
+
+.main-container {
+    padding: 1rem;
+}
+
+.table-container {
+    margin-top: 2rem;
+    overflow: auto; 
+    min-height: 60vh;   
+}
+
+
+.group {
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+    align-items: center;    
+    gap: 1rem;
+}
+
+
+.action {
+    display: flex;
+    gap: 1rem;
+}
+
+
+
+.img {
+    display: flex;
+    justify-content: center;
+}

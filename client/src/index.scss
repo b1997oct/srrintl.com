@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+$error: 243 11 11;
+$primary: 0 0 0;
+
+
+body {
+  font-family: "Ubuntu", serif;
+  margin: 0;
+  padding: 0;
+}
+
+.truncate {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.skt {
+  background: #eeecec;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.skt-animate {
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: skt-move 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes skt-move {
+    from {
+        background-position: 200% 0;
+    }
+    to {
+        background-position: -200% 0;
+    }
+}
+
+button {
+  padding: 0.5rem;
+  font-size: medium;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+button:not(:disabled):active {
+  transform: scale(0.99);
+}
+
+
+
+button.primary {
+  background: rgb($primary);
+  color: white;
+}
+
+input:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input {
+  padding: 0.5rem 0.5rem;
+  font-size: medium;
+  width: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(128, 128, 128, 0.525);
+}
+
+.text-error {
+  color: rgb($error);
+}
+
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 2rem;
+  border-bottom: 1px solid #dcd1d1;
+
+  @media (max-width:768px) {
+    padding: 1rem;
+  } 
+  
+
+  h2 {
+    flex: 1;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+}
+
+.modal-header {
+  display: flex;
+  padding: 1rem;
+  border-bottom: 1px solid #ece9e9;
+  justify-content: space-between;
+
+  .close {
+    cursor: pointer;
+  }
+}
+
+h3 {
+  margin: 0;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+
+.options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  box-shadow: 2px 3px 5px #0006;
+  gap: 1rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.option {
+  padding: 0.5rem;
+  
+}
+
+.option:hover {
+  background: #9995;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.cover {
+  aspect-ratio: 1/1;
+  object-fit: contain;
+}
+
+.books-cointer {
+  padding: 2rem;
+
+
+  @media (max-width:768px) {
+    padding: 1rem;
+  }
+}
