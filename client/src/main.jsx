@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 
 
-axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.baseURL = 'https://srrintl-com-1.onrender.com'
 axios.defaults.headers.authorization = Cookies.get('token')
 
 createRoot(document.getElementById('root')).render(
