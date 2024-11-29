@@ -24,14 +24,18 @@ const schema = [
 
 export default function Login() {
 
-    const { data, inputParse, isError } = useError(schema),
+    const { data, inputParse, isError, setData } = useError(schema),
         [error, setError] = useState(''),
         [touched, setTouched] = useState(false),
-        [loading, setLoading] = useState(false)
+        [loading, setLoading] = useState(false),
+        url = new URL(location.href),
+        email = url.searchParams.get('email'),
+        password = url.searchParams.get('pass')
 
 
     useEffect(() => {
         document.title = 'Login | ' + document.title
+        setData({ email, password })
     }, [])
 
 

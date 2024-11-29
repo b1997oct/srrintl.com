@@ -21,6 +21,7 @@ export default function Readme() {
             <ol>
                 <li>Email : b1997oct@gmail.com</li>
                 <li>Pass : 1234</li>
+                <li><a href='/login?email=b1997oct@gmail.com&pass=1234'>Login?</a></li>
             </ol>
 
             <div className='wrapper'>
