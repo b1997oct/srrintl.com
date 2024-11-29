@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../../components/Input'
 import { Link } from 'react-router-dom'
 import './form.scss'
@@ -30,15 +30,42 @@ const schema = [
 ]
 
 
+
+
 export default function Signup() {
 
-    const { data, inputParse, isError } = useError(schema),
+    const { data, inputParse, isError, setData } = useError(schema),
         [error, setError] = useState(''),
         [touched, setTouched] = useState(false),
-        [loading, setLoading] = useState(false)
+        [loading, setLoading] = useState(false),
+        url = new URL(location.href),
+        account = url.searchParams.get('account'),
+        token = url.searchParams.get('token')
 
+    function getUser() {
+        axios.get('/user/account')
+            .then(res => {
+                const { name, email } = res.data
+                setData({ name, email })
+            })
+            .catch(err => {
+                alert(err.response?.data.message || err.message)
+            })
+    }
+    useEffect(() => {
+        document.title = 'Signup | ' + document.title
 
-   async function submit(e) {
+        if (account == 'edit') {
+            if (token) {
+                getUser()
+            } else {
+                url.searchParams.append('token', Cookies.get('token'))
+                location.replace(url.toString())
+            }
+        }
+    }, [])
+
+    async function submit(e) {
         e.preventDefault()
         if (isError()) {
             setTouched(true)
@@ -47,15 +74,17 @@ export default function Signup() {
         setLoading(true)
         setError('')
         try {
-        const { data: res } = await axios.post('/signup', data)
-        Cookies.set('token', res.token)
-        location.href ='/'
+
+            data.token = token
+            const { data: res } = await axios.post('/signup', data)
+            Cookies.set('token', res.token)
+            location.href = '/'
         } catch (err) {
             console.log('err: ', err);
             setError(err.response.data.message)
         } finally {
             setLoading(false)
-        } 
+        }
     }
 
 
@@ -67,7 +96,7 @@ export default function Signup() {
                 {schema.map(d => <Input key={d.name} disabled={loading} touched={touched} {...inputParse(d)} />)}
                 <div className='text-error'>{error}</div>
                 <button disabled={loading} type='submit' className='primary'>Sign Up</button>
-                <div  className='footer'>Already Have An Account? <Link className='hover:underline' to={'/login'}>Log In</Link></div>
+                <div className='footer'>Already Have An Account? <Link className='hover:underline' to={'/login'}>Log In</Link></div>
             </form>
         </div>
     )

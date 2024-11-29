@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Books from './pages/Books';
+import Readme from './pages/Readme';
 
 
 
@@ -17,6 +18,7 @@ export default function App() {
       <Route path='/signup' element={<Signup />} />
       <Route path='/login' element={<Login />} />
       <Route path='/books' element={<Books />} />
+      <Route path='/readme.md' element={<Readme />} />
     </>
   );
 }

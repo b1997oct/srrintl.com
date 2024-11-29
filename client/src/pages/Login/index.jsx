@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../../components/Input'
 import { Link, useNavigate } from 'react-router-dom'
 import '../Signup/form.scss'
@@ -27,11 +27,15 @@ export default function Login() {
     const { data, inputParse, isError } = useError(schema),
         [error, setError] = useState(''),
         [touched, setTouched] = useState(false),
-        [loading, setLoading] = useState(false),
-        navigate = useNavigate()
+        [loading, setLoading] = useState(false)
 
 
-   async function submit(e) {
+    useEffect(() => {
+        document.title = 'Login | ' + document.title
+    }, [])
+
+
+    async function submit(e) {
         e.preventDefault()
         if (isError()) {
             setTouched(true)
@@ -40,18 +44,18 @@ export default function Login() {
         setLoading(true)
         setError('')
         try {
-        const { data: res } = await axios.post('/login', data)
-        Cookies.set('token', res.token)
-        location.href ='/'
+            const { data: res } = await axios.post('/login', data)
+            Cookies.set('token', res.token)
+            location.href = '/'
         } catch (err) {
             setError(err.response.data.message)
         } finally {
             setLoading(false)
-        } 
+        }
     }
 
     return (
-        <div  className='container'>
+        <div className='container'>
             <form onSubmit={submit} className='border p-4 grid gap-4 rounded-xl md:p-8 shadow'>
                 <h1 className='tac'>Login</h1>
                 <p className='tac'>Enter email and password to access the Book Donation Synstem</p>

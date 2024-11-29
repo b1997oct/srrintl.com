@@ -79,14 +79,22 @@ input {
 
 .navbar {
   display: flex;
+  position: sticky;
+  top: 0;
+  background: white;
   align-items: center;
   gap: 1rem;
-  padding: 0 2rem;
+  padding: 0 0.5rem;
   border-bottom: 1px solid #dcd1d1;
 
-  @media (max-width:768px) {
-    padding: 1rem;
+  @media (min-width:968px) {
+    padding:  0 2rem;
   } 
+
+  @media (min-width:768px) {
+    padding: 0 1rem;
+  } 
+ 
   
 
   h2 {

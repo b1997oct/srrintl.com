@@ -15,30 +15,30 @@ export default function AllBooks() {
         { skip, limit } = fils,
         { currentPage, nextPage, prevPage, totalPages } = usePagination({ limit, skip, total })
 
-        useEffect(() => {
-            setLoading(true)
-            axios.post('/books', fils)
-                .then(res => {
-                    totalRef.current = res.data.total || 0
-                    setData(res.data.data)
-                    setError('')
-                })
-                .catch(err => {
-                    setError(err.message)
-                })
-                .finally(() => setLoading(false))
-        }, [fils])
+    useEffect(() => {
+        setLoading(true)
+        axios.post('/books', fils)
+            .then(res => {
+                totalRef.current = res.data.total || 0
+                setData(res.data.data)
+                setError('')
+            })
+            .catch(err => {
+                setError(err.message)
+            })
+            .finally(() => setLoading(false))
+    }, [fils])
 
     return (
         <div className='books-cointer'>
             {filtersUi}
             <BookCards data={data} loading={loading} />
             <div className='group'>
-                        <div>Page No. {currentPage}/{totalPages}</div>
-                        <button disabled={!prevPage}>Prev</button>
-                        <div>Records {totalRef.current}</div>
-                        <button disabled={!nextPage}>Next</button>
-                    </div>
+                <div>Records {total}</div>
+                <button disabled={!prevPage}>Prev</button>
+                <div>Page {currentPage}/{totalPages}</div>
+                <button disabled={!nextPage}>Next</button>
+            </div>
         </div>
     )
 }

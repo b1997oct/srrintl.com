@@ -7,7 +7,7 @@ import ClickAwayListener from '../ClickAwayListener'
 
 export default function Navbar({ onLogin }) {
 
-    const [user, setUser] = useState(false),
+    const [user, setUser] = useState({}),
         { name } = user || {}
 
     async function getUser() {
@@ -28,7 +28,7 @@ export default function Navbar({ onLogin }) {
 
 
     return (
-        <div className='navbar'>
+        <div className='navbar' data-user={JSON.stringify(user)}>
             <h2><a href='/'>BookShare</a></h2>
             {!name ? <>
                 <Link to='/login'>Login</Link>

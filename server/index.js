@@ -16,25 +16,35 @@ const app = express()
 app.use(cors())
 app.use(express.json({ limit: "5MB" }))
 
-app.post('/signup', async (req, res) => {
-    let { body } = req, { email, password } = body
+
+app.all('/signup', async (req, res) => {
+    let data, { body } = req,
+        { email, password, token } = body
 
     try {
-        email = email.toLowerCase()
-        const data = await User.findOne({ email })
 
-        if (data) {
-            return res.status(400).json({ message: 'user already exist' })
+        body.password = await hash(password, 10)
+
+        if (token) {
+            const { user } = await verifyToken(token)
+            data = await User.findByIdAndUpdate(user, body)
+        } else {
+            email = email.toLowerCase()
+            data = await User.findOne({ email })
+            if (data) {
+                return res.status(400).json({ message: 'user already exist' })
+            }
+            data = await new User({ ...body, email }).save()
         }
-        password = await hash(password, 10)
-        const user = await new User({ ...body, email }).save()
-        const token = await createToken({ email, user: user._id })
-        return res.status(201).json({ login: true, token })
+
+        const tok = await createToken({ email, user: data._id })
+        return res.status(201).json({ login: true, token: tok })
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 
 })
+
 
 app.post('/login', async (req, res) => {
     let { email, password } = req.body
@@ -58,40 +68,43 @@ app.post('/login', async (req, res) => {
 
 app.post('/books', async (req, res) => {
 
-    const { limit, skip, ...others } = req.body
+    try {
+        const { limit = 24, skip = 0, ...others } = req.body
+        const match = {}
+        Object.keys(others).forEach(d => {
+            match[d] = new RegExp(others[d], 'i')
+        })
 
-    const match = {}
-    Object.keys(others).forEach(d => {
-        match[d] = new RegExp(others[d], 'i')
-    })
-
-    const data = await Books.aggregate([
-        { $match: match },
-        {
-            $facet: {
-                metadata: [{ $count: "total" }],
-                data: [
-                    {
-                        $limit: limit
-                    },
-                    {
-                        $skip: skip
-                    },
-                    {
-                        $sort: { createdAt: -1 }
-                    }
-                ],
+        const data = await Books.aggregate([
+            { $match: match },
+            {
+                $facet: {
+                    metadata: [{ $count: "total" }],
+                    data: [
+                        {
+                            $limit: limit
+                        },
+                        {
+                            $skip: skip
+                        },
+                        {
+                            $sort: { createdAt: -1 }
+                        }
+                    ],
+                },
             },
-        },
-        {
-            $project: {
-                data: "$data",
-                total: { $arrayElemAt: ["$metadata.total", 0] },
+            {
+                $project: {
+                    data: "$data",
+                    total: { $arrayElemAt: ["$metadata.total", 0] },
+                }
             }
-        }
-    ])
+        ])
 
-    return res.json(data[0])
+        return res.json(data[0])
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
 })
 
 
@@ -99,12 +112,27 @@ app.post('/user/logout', (req, res) => {
     return res.status(200).json({ logout: true })
 })
 
-app.post('/user/book', async (req, res) => {
+app.get('/user/account', async (req, res) => {
     const token = req.headers.authorization
-    const { user } = await verifyToken(token),
-        { id, ...body } = req.body
 
     try {
+        const { user } = await verifyToken(token)
+        const data = await User.findById(user)
+
+        return res.json(data)
+    } catch (error) {
+        return res.status(500).json({ message: error.message, href: error.href })
+
+    }
+})
+
+app.post('/user/book', async (req, res) => {
+    const token = req.headers.authorization
+
+    try {
+        const { user } = await verifyToken(token),
+            { id, ...body } = req.body
+
         let data
         if (id == 'new') {
             body.user = user

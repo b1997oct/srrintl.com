@@ -5,6 +5,7 @@ import axios from 'axios'
 import ManageBook from './ManageBook'
 import useFilters from '../../components/Filters'
 import usePagination from '../../components/usePagination'
+import ExportData from './ExportData'
 
 const columns = [
     {
@@ -40,6 +41,7 @@ const columns = [
 ]
 
 
+
 export default function Books() {
 
     const { fils, filtersUi } = useFilters(),
@@ -53,6 +55,10 @@ export default function Books() {
         { skip, limit } = fils,
         { currentPage, nextPage, prevPage, totalPages } = usePagination({ limit, skip, total })
 
+    useEffect(() => {
+        document.title = 'Manage | ' + document.title
+
+    }, [])
 
     useEffect(() => {
         setLoading(true)
@@ -111,9 +117,11 @@ export default function Books() {
             <div className='main-container'>
                 <div style={{ marginBottom: 20 }} className='group'>
                     <div className='text-error'>{error}</div>
+                    <ExportData data={data} />
                     <button className='primary' onClick={() => setOpen({ _id: 'new' })}>+ Add New</button>
                 </div>
                 <ManageBook open={open} onClose={onClose} id={id} />
+                <div>Search</div>
                 {filtersUi}
                 <div className='table-container'>
                     <div>{total.current} Results Found</div>
@@ -153,9 +161,9 @@ export default function Books() {
                         </tbody>
                     </table>
                     <div className='group'>
-                        <div>Page No. {currentPage}/{totalPages}</div>
-                        <button disabled={!prevPage}>Prev</button>
                         <div>Records {total}</div>
+                        <button disabled={!prevPage}>Prev</button>
+                        <div>Page No. {currentPage}/{totalPages}</div>
                         <button disabled={!nextPage}>Next</button>
                     </div>
                 </div>
