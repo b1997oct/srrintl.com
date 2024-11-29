@@ -17,6 +17,11 @@ export default function Readme() {
                 <li>MongoDb (Storage & Db Query)</li>
                 <li>Deployment render.com & vercel</li>
             </ol>
+            <p>Login Credentials</p>
+            <ol>
+                <li>Email : b1997oct@gmail.com</li>
+                <li>Pass : 1234</li>
+            </ol>
 
             <div className='wrapper'>
                 <div className='cointer'>

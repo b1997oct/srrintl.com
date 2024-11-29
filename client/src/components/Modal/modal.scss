@@ -13,7 +13,7 @@
         width: 80vw;
         background: #fff;
         box-shadow: 2px 3px 5px #000;
-
+        overflow: auto;
         @media (min-width:768px) {
             width: 50vw;
         }
