@@ -5,7 +5,15 @@ export default function Readme() {
     return (
         <div className='readme-container'>
             <h1 className='text-secondary'>Assignment Summary: Building a React App for Uploading and Visualizing Excel and CSV Files</h1>
+            <div style={{ textAlign: 'center' }}>
+                Source Code :- <a href='https://github.com/b1997oct/winline' >https://github.com/b1997oct/winline</a>
+            </div>
+            <br />
+            <div style={{ textAlign: 'center' }}>
+                <a href='/' >Go To Home Page</a>
+            </div>
 
+            <br />
             <h1 className='text-primary'>Overview</h1>
             <div className='section-container'>
                 <div className='section'>

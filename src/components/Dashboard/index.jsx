@@ -16,7 +16,7 @@ export default function Dashboard() {
         [page, setPage] = useState({ limit: 25, skip: 0, sortKey: '', sortOrder: 0 }),
         isData = data.length
 
-       console.log(page);
+    console.log(page);
     const onChange = val => {
         const f = {}
         Object.keys(val[0]).map(d => {
@@ -50,10 +50,24 @@ export default function Dashboard() {
 
     const sortIt = (a, b) => {
         const { sortKey, sortOrder } = page
-        if (sortOrder == 1) {
-            return a[sortKey] - b[sortKey]
-        } else if (sortOrder == -1){
-            return b[sortKey] - a[sortKey]
+        const filType = filters[sortKey]
+
+        if (!filType) return
+        const a2 = a[sortKey] 
+       const b2 = b[sortKey]
+
+        if (filType.datatype == 'number') {
+            if (sortOrder == 1) {
+                return a2 - b2
+            } else if (sortOrder == -1) {
+                return b2 - a2
+            }
+        } else {
+            if (sortOrder == 1) {
+            return a2.toLowerCase().localeCompare(b2.toLowerCase())
+            }  else if (sortOrder == -1) {
+                return b2.toLowerCase().localeCompare(a2.toLowerCase()) 
+            }
         }
     }
 
